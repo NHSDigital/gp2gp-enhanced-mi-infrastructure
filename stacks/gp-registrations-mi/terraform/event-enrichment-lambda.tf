@@ -27,7 +27,7 @@ resource "aws_lambda_function" "event_enrichment_lambda" {
       GP_ODS_DYNAMO_TABLE_NAME                  = aws_dynamodb_table.mi_api_gp_ods.name,
       ICB_ODS_DYNAMO_TABLE_NAME                 = aws_dynamodb_table.mi_api_icb_ods.name,
       DEGRADES_MESSAGE_QUEUE_NAME               = "${var.environment}_${var.degrades_message_queue}",
-      REGION                                    = "${data.aws_region.current.name}"
+      REGION                                    = "${data.aws_region.current.region}"
     }
   }
 }
