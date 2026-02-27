@@ -1,5 +1,6 @@
 BUILD_PATH = stacks/degrades-reporting/terraform/lambda/build
 DEGRADES_LAMBDA_PATH = lambda/degrades-reporting
+LAMBDA_TEST_PATH = lambdas/tests
 UTILS = degrade_utils
 
 env:
@@ -17,6 +18,18 @@ test-degrades:
 	rm -rf tmp/reports || true
 	mkdir -p tmp/reports
 	cd $(DEGRADES_LAMBDA_PATH)  && venv/bin/python3 -m pytest tests/
+
+setup-test-env:
+	rm -rf tmp/reports || true
+	mkdir -p tmp/reports
+	rm -rf $(LAMBDA_TEST_PATH)/.venv
+	python 3.12 -m venv $(LAMBDA_TEST_PATH)/.venv
+	$(LAMBDA_TEST_PATH)/.venv/bin/pip install -r lambdas/test_requirements.txt pytest pytest-cov
+
+test-lambdas-with-coverage:
+	cd $(LAMBDA_TEST_PATH) && ./.venv/bin/python3 -m pytest \
+    --cov=. \
+    --cov-report=xml:../../tmp/reports/coverage.xml
 
 test-degrades-coverage:
 	rm -rf tmp/reports || true

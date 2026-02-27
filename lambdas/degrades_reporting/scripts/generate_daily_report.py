@@ -1,11 +1,11 @@
 import os
 import csv
 from datetime import datetime, timedelta
-from models.degrade_message import DegradeMessage
-from degrade_utils.dynamo_service import DynamoService
-from degrade_utils.s3_service import S3Service
-from degrade_utils.utils import get_degrade_totals_from_degrades
-from degrade_utils.enums import CsvHeaders
+from lambdas.degrades_reporting.models.degrade_message import DegradeMessage
+from lambdas.degrades_reporting.degrade_utils.dynamo_service import DynamoService
+from lambdas.degrades_reporting.degrade_utils.s3_service import S3Service
+from lambdas.degrades_reporting.degrade_utils.utils import get_degrade_totals_from_degrades
+from lambdas.degrades_reporting.degrade_utils.enums import CsvHeaders
 
 """Adhoc script to generate daily report from DynamoDB
     DATE, in format YYYY-MM-DD, to be passed in as an environment variable,

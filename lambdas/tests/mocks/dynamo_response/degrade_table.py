@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from models.degrade_message import Degrade
-from tests.mocks.sqs_messages.degrades import (
+from lambdas.degrades_reporting.models.degrade_message import Degrade
+from lambdas.tests.mocks.sqs_messages.degrades import (
     MOCK_SIMPLE_DEGRADES_MESSAGE,
     MOCK_FIRST_DEGRADES_MESSAGE,
     MOCK_COMPLEX_DEGRADES_MESSAGE,

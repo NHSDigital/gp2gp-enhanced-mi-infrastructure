@@ -1,19 +1,19 @@
 import os
 import pandas as pd
 from pandas.testing import assert_frame_equal
-from models.degrade_message import DegradeMessage, Degrade
-from tests.conftest import TEST_DEGRADES_DATE
-from tests.mocks.dynamo_response.degrade_table import (
+from lambdas.degrades_reporting.models.degrade_message import DegradeMessage, Degrade
+from lambdas.tests.conftest import TEST_DEGRADES_DATE
+from lambdas.tests.mocks.dynamo_response.degrade_table import (
     simple_message_timestamp,
     FIRST_DEGRADES_MESSAGE_DYNAMO_RESPONSE,
     SIMPLE_DEGRADES_MESSAGE_DYNAMO_RESPONSE,
     COMPLEX_DEGRADES_MESSAGE_DYNAMO_RESPONSE,
 )
-from tests.mocks.sqs_messages.degrades import (
+from lambdas.tests.mocks.sqs_messages.degrades import (
     MOCK_FIRST_DEGRADES_MESSAGE,
     MOCK_COMPLEX_DEGRADES_MESSAGE,
 )
-from degrade_utils.utils import (
+from lambdas.degrades_reporting.degrade_utils.utils import (
     get_key_from_date,
     calculate_number_of_degrades,
     is_degrade,
@@ -30,7 +30,7 @@ def test_get_key_from_date():
 
 
 def test_calculate_number_of_degrades():
-    folder_path = "tests/mocks/mixed_messages"
+    folder_path = "mocks/mixed_messages"
     json_files = [f for f in os.listdir(folder_path) if f.endswith(".json")]
 
     result = calculate_number_of_degrades(path=folder_path, files=json_files)
@@ -38,12 +38,12 @@ def test_calculate_number_of_degrades():
 
 
 def test_is_degrade_with_degrade_message():
-    with open("tests/mocks/mixed_messages/01-DEGRADES-01.json", "r") as file:
+    with open("mocks/mixed_messages/01-DEGRADES-01.json", "r") as file:
         assert is_degrade(file.read())
 
 
 def test_is_degrade_with_file_not_degrades_message():
-    with open("tests/mocks/mixed_messages/01-DOCUMENT_RESPONSES-01.json", "r") as file:
+    with open("mocks/mixed_messages/01-DOCUMENT_RESPONSES-01.json", "r") as file:
         assert is_degrade(file.read()) == False
 
 

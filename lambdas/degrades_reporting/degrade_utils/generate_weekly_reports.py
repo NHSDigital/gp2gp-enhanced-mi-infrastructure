@@ -4,8 +4,8 @@ import pandas as pd
 import logging
 from datetime import datetime, timedelta
 from botocore.exceptions import ClientError
-from degrade_utils.s3_service import S3Service
-from degrade_utils.enums import CsvHeaders
+from lambdas.degrades_reporting.degrade_utils.s3_service import S3Service
+from lambdas.degrades_reporting.degrade_utils.enums import CsvHeaders
 
 logging.basicConfig(format="%(levelname)s: %(message)s")
 logger = logging.getLogger()

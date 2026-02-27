@@ -1,7 +1,7 @@
 import json
 import os
 import boto3
-from degrade_utils.s3_service import S3Service
+from lambdas.degrades_reporting.degrade_utils.s3_service import S3Service
 
 
 """ Ad hoc script to search through S3 bucket for degrades date and send to degrades queue

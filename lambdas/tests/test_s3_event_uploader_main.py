@@ -3,7 +3,11 @@ import os
 import unittest
 from unittest.mock import patch, MagicMock, call
 
-from s3_event_uploader_main import _upload_events_to_s3, _extract_events_from_sqs_messages, _generate_s3_key, UnableToUploadEventToS3
+from lambdas.s3_event_uploader.s3_event_uploader_main import (
+           _upload_events_to_s3,
+           _extract_events_from_sqs_messages,
+           _generate_s3_key,
+           UnableToUploadEventToS3)
 
 
 class TestS3EventUploaderMain(unittest.TestCase):

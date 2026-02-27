@@ -1,4 +1,4 @@
-from degrade_utils.generate_weekly_reports import generate_weekly_report
+from lambdas.degrades_reporting.degrade_utils.generate_weekly_reports import generate_weekly_report
 import os
 
 """ Adhoc script to generate a weekly summary report with historical data,

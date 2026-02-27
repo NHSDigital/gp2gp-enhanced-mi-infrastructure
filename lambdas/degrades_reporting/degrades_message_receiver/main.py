@@ -3,9 +3,9 @@ import os
 import logging
 from datetime import datetime
 from pydantic import ValidationError
-from models.degrade_message import DegradeMessage
-from degrade_utils.dynamo_service import DynamoService
-from degrade_utils.utils import extract_degrades_payload
+from lambdas.degrades_reporting.models.degrade_message import DegradeMessage
+from lambdas.degrades_reporting.degrade_utils.dynamo_service import DynamoService
+from lambdas.degrades_reporting.degrade_utils.utils import extract_degrades_payload
 
 logger = logging.getLogger()
 logger.setLevel("INFO")

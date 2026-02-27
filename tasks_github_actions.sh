@@ -7,15 +7,15 @@ task="$1"
 function build_lambda {
     lambda_name=$1
     lambda_services=$2
-    shared_requirements=lambda/shared_requirements.txt
-    build_dir=lambda/build/$lambda_name
+    shared_requirements=lambdas/shared_requirements.txt
+    build_dir=lambdas/build/$lambda_name
     rm -rf $build_dir
     mkdir -p $build_dir
 
     if test "$lambda_services"; then
         cp -r ./$lambda_services $build_dir
     fi
-    cp lambda/$lambda_name/*.py $build_dir
+    cp lambdas/$lambda_name/*.py $build_dir
 
     if test -f "$shared_requirements"; then
         pip install -r $shared_requirements -t $build_dir
@@ -28,12 +28,12 @@ function build_lambda {
 
 function build_lambda_layer {
     layer_name=$1
-    build_dir=lambda/build/layers/$layer_name
+    build_dir=lambdas/build/layers/$layer_name
 
     rm -rf $build_dir/python
     mkdir -p $build_dir/python
 
-    requirements_file=lambda/$layer_name-requirements.txt
+    requirements_file=lambdas/$layer_name-requirements.txt
     if test -f "$requirements_file"; then
         python3 -m venv create_layer
         source create_layer/bin/activate
@@ -54,7 +54,7 @@ build-lambdas)
   build_lambda error-alarm-alert
   build_lambda splunk-cloud-event-uploader
   build_lambda event-enrichment utils
-  build_lambda s3-event-uploader
+  build_lambda s3_event_uploader
 ;;
 *)
   echo "Invalid task: '${task}'"

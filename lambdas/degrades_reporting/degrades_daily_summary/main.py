@@ -2,16 +2,16 @@ import os
 import logging
 from datetime import datetime, timedelta
 
-from models.degrade_message import DegradeMessage
-from degrade_utils.dynamo_service import DynamoService
-from degrade_utils.s3_service import S3Service
-from degrade_utils.utils import (
+from lambdas.degrades_reporting.models.degrade_message import DegradeMessage
+from lambdas.degrades_reporting.degrade_utils.dynamo_service import DynamoService
+from lambdas.degrades_reporting.degrade_utils.s3_service import S3Service
+from lambdas.degrades_reporting.degrade_utils.utils import (
     extract_query_timestamp_from_scheduled_event_trigger,
     get_degrade_totals_from_degrades,
     is_monday,
 )
-from degrade_utils.generate_weekly_reports import generate_weekly_report
-from degrade_utils.enums import CsvHeaders
+from lambdas.degrades_reporting.degrade_utils.generate_weekly_reports import generate_weekly_report
+from lambdas.degrades_reporting.degrade_utils.enums import CsvHeaders
 
 logging.basicConfig(format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)

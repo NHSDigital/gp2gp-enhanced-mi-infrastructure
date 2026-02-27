@@ -1,10 +1,10 @@
 import os
 import pytest
-from scripts.populate_table import populate_degrades_table
-from tests.conftest import MOCK_BUCKET, REGION_NAME, MOCK_DEGRADES_QUEUE_NAME
+from lambdas.degrades_reporting.scripts.populate_table import populate_degrades_table
+from lambdas.tests.conftest import MOCK_BUCKET, REGION_NAME, MOCK_DEGRADES_QUEUE_NAME
 from moto import mock_aws
 import boto3
-from degrade_utils.utils import calculate_number_of_degrades
+from lambdas.degrades_reporting.degrade_utils.utils import calculate_number_of_degrades
 
 test_date = "2024/01/01"
 
@@ -31,7 +31,7 @@ def test_populate_table_script_gets_all_files_from_S3(
 
 @mock_aws
 def test_populate_table_script_send_file_to_sqs(set_env):
-    folder_path = "tests/mocks/mixed_messages"
+    folder_path = "mocks/mixed_messages"
     json_files = [f for f in os.listdir(folder_path) if f.endswith(".json")]
 
     conn = boto3.resource("s3", region_name=REGION_NAME)

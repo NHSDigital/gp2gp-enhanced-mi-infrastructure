@@ -4,17 +4,17 @@ from datetime import datetime
 import pytest
 from moto import mock_aws
 from boto3.dynamodb.conditions import Key
-from degrade_utils.utils import extract_degrades_payload
-from models.degrade_message import DegradeMessage
-from tests.mocks.sqs_messages.degrades import (
+from lambdas.degrades_reporting.degrade_utils.utils import extract_degrades_payload
+from lambdas.degrades_reporting.models.degrade_message import DegradeMessage
+from lambdas.tests.mocks.sqs_messages.degrades import (
     MOCK_COMPLEX_DEGRADES_MESSAGE,
     MOCK_FIRST_DEGRADES_MESSAGE,
     MOCK_SIMPLE_DEGRADES_MESSAGE,
 )
 
-from tests.mocks.dynamo_response.degrade_table import simple_message_timestamp
+from lambdas.tests.mocks.dynamo_response.degrade_table import simple_message_timestamp
 
-from degrade_utils.dynamo_service import DynamoService
+from lambdas.degrades_reporting.degrade_utils.dynamo_service import DynamoService
 
 degrades_messages = [
     MOCK_COMPLEX_DEGRADES_MESSAGE,

@@ -1,19 +1,19 @@
 import os
 import pytest
-from degrade_utils.generate_weekly_reports import (
+from lambdas.degrades_reporting.degrade_utils.generate_weekly_reports import (
     generate_weekly_report,
     get_keys_from_date_range,
     generate_weekly_summary,
     generate_new_rows_from_week_summary,
 )
 
-from degrade_utils.enums import CsvHeaders
+from lambdas.degrades_reporting.degrade_utils.enums import CsvHeaders
 
 
 @pytest.fixture
 def mock_weekly_summary(mocker):
     mock_function = mocker.patch(
-        "degrade_utils.generate_weekly_reports.generate_weekly_summary"
+        "lambdas.degrades_reporting.degrade_utils.generate_weekly_reports.generate_weekly_summary"
     )
     return mock_function
 
@@ -30,7 +30,7 @@ def upload_daily_reports(mock_s3):
     ]
 
     for date in date_keys:
-        mock_s3.upload_file(f"./tests/reports/{date}.csv", f"reports/daily/{date}.csv")
+        mock_s3.upload_file(f"reports/{date}.csv", f"reports/daily/{date}.csv")
 
 
 def test_get_keys_from_date_range():
@@ -106,7 +106,7 @@ def test_weekly_report_generation_adds_new_row_to_global_report(
     }
 
     mock_s3.upload_file(
-        "./tests/reports/global.csv", "reports/degrades_weekly_report.csv"
+        "reports/global.csv", "reports/degrades_weekly_report.csv"
     )
 
     generate_weekly_report("2024-09-23")
@@ -116,7 +116,7 @@ def test_weekly_report_generation_adds_new_row_to_global_report(
         Filename="/tmp/degrades_weekly_report.csv",
     )
     with (
-        open("./tests/reports/global_2.csv", "r") as expected_file,
+        open("reports/global_2.csv", "r") as expected_file,
         open("/tmp/degrades_weekly_report.csv", "r") as actual_file,
     ):
         expected = expected_file.read()
@@ -142,7 +142,7 @@ def test_generate_weekly_reports_writes_new_report_no_previous_report_written(
     generate_weekly_report("2024-09-16")
 
     with (
-        open("./tests/reports/global.csv", "r") as expected_file,
+        open("reports/global.csv", "r") as expected_file,
         open("/tmp/degrades_weekly_report.csv", "r") as actual_file,
     ):
         expected = expected_file.read()

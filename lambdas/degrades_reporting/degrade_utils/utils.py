@@ -3,8 +3,8 @@ import os
 import pandas as pd
 from datetime import datetime, timedelta
 
-from degrade_utils.enums import CsvHeaders
-from models.degrade_message import DegradeMessage, Degrade
+from lambdas.degrades_reporting.degrade_utils.enums import CsvHeaders
+from lambdas.degrades_reporting.models.degrade_message import DegradeMessage, Degrade
 
 
 def get_key_from_date(date: str):

@@ -3,15 +3,15 @@ from datetime import datetime
 import os
 from dataclasses import dataclass
 from moto import mock_aws
-from tests.mocks.sqs_messages.degrades import (
+from mocks.sqs_messages.degrades import (
     MOCK_COMPLEX_DEGRADES_MESSAGE,
     MOCK_FIRST_DEGRADES_MESSAGE,
     MOCK_SIMPLE_DEGRADES_MESSAGE,
 )
-from degrade_utils.dynamo_service import DynamoService
-from degrade_utils.utils import extract_degrades_payload
-from models.degrade_message import DegradeMessage
-from degrade_utils.s3_service import S3Service
+from lambdas.degrades_reporting.degrade_utils.dynamo_service import DynamoService
+from lambdas.degrades_reporting.degrade_utils.utils import extract_degrades_payload
+from lambdas.degrades_reporting.models.degrade_message import DegradeMessage
+from lambdas.degrades_reporting.degrade_utils.s3_service import S3Service
 
 import pytest
 
@@ -166,7 +166,7 @@ def mock_s3():
 @pytest.fixture
 def mock_s3_with_files(mock_s3):
     with mock_aws():
-        folder_path = "tests/mocks/mixed_messages"
+        folder_path = "mocks/mixed_messages"
         json_files = [f for f in os.listdir(folder_path) if f.endswith(".json")]
 
         for file in json_files:

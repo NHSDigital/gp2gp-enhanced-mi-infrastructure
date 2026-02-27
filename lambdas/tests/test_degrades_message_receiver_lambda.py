@@ -1,18 +1,18 @@
 import json
 import pytest
 from datetime import datetime
-from degrades_message_receiver.main import lambda_handler
-from tests.mocks.dynamo_response.degrade_table import (
+from lambdas.degrades_reporting.degrades_message_receiver.main import lambda_handler
+from mocks.dynamo_response.degrade_table import (
     SIMPLE_DEGRADES_MESSAGE_DYNAMO_RESPONSE,
     FIRST_DEGRADES_MESSAGE_DYNAMO_RESPONSE,
     COMPLEX_DEGRADES_MESSAGE_DYNAMO_RESPONSE,
 )
-from tests.mocks.sqs_messages.degrades import (
+from mocks.sqs_messages.degrades import (
     MOCK_COMPLEX_DEGRADES_MESSAGE,
     MOCK_FIRST_DEGRADES_MESSAGE,
     MOCK_SIMPLE_DEGRADES_MESSAGE,
 )
-from tests.mocks.sqs_messages.document_response import DOCUMENT_RESPONSE
+from mocks.sqs_messages.document_response import DOCUMENT_RESPONSE
 
 
 def test_degrades_message_receiver_handles_single_degrade_message(
