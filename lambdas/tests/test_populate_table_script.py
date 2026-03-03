@@ -31,7 +31,7 @@ def test_populate_table_script_gets_all_files_from_S3(
 
 @mock_aws
 def test_populate_table_script_send_file_to_sqs(set_env):
-    folder_path = "mocks/mixed_messages"
+    folder_path = "tests/mocks/mixed_messages"
     json_files = [f for f in os.listdir(folder_path) if f.endswith(".json")]
 
     conn = boto3.resource("s3", region_name=REGION_NAME)

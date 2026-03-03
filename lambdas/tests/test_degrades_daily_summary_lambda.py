@@ -60,7 +60,7 @@ def test_generate_report_from_dynamo_query_result(mock_table_with_files, mocker)
 
     generate_report_from_dynamo_query(degrades_from_table, TEST_DEGRADES_DATE)
 
-    expected = readfile(f"{os.getcwd()}/reports/{TEST_DEGRADES_DATE}.csv")
+    expected = readfile(f"{os.getcwd()}/tests/reports/{TEST_DEGRADES_DATE}.csv")
     with open(f"/tmp/{TEST_DEGRADES_DATE}.csv", "r") as file:
         actual = file.read()
         assert actual == expected

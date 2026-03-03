@@ -2,10 +2,20 @@ BUILD_PATH = stacks/degrades-reporting/terraform/lambda/build
 DEGRADES_LAMBDA_PATH = lambda/degrades-reporting
 LAMBDA_TEST_PATH = lambdas/tests
 UTILS = degrade_utils
+REQUIREMENTS_PATH=lambdas/requirements
+SHARED_REQUIREMENTS=$(REQUIREMENTS_PATH)/shared_requirements.txt
+TEST_REQUIREMENTS=$(REQUIREMENTS_PATH)/test_requirements.txt
 
 env:
-	python3 -m venv .venv
-	.venv/bin/pip3 install -r  requirements.txt
+	@echo "Removing old venv."
+	@rm -rf lambdas/venv || true
+	@echo "Building new venv and installing requirements."
+	@python3.13 -m venv ./lambdas/venv
+	@./lambdas/venv/bin/pip3 install --upgrade pip
+	@./lambdas/venv/bin/pip3 install -r $(SHARED_REQUIREMENTS) --no-cache-dir
+	@./lambdas/venv/bin/pip3 install -r $(TEST_REQUIREMENTS) --no-cache-dir
+	./lambdas/venv/bin/pip install pytest pytest-cov pytest-mock
+	@echo "Now activate your venv."
 
 degrades-env:
 	cd $(DEGRADES_LAMBDA_PATH) && rm -rf venv || true
@@ -26,10 +36,16 @@ setup-test-env:
 	python 3.12 -m venv $(LAMBDA_TEST_PATH)/.venv
 	$(LAMBDA_TEST_PATH)/.venv/bin/pip install -r lambdas/test_requirements.txt pytest pytest-cov
 
+#test-lambdas-with-coverage:
+#	cd ./lambdas && ./.venv/bin/python3 -m pytest \
+#    --cov=. \
+#    --cov-report=xml:../../tmp/reports/coverage.xml
+
 test-lambdas-with-coverage:
-	cd $(LAMBDA_TEST_PATH) && ./.venv/bin/python3 -m pytest \
-    --cov=. \
-    --cov-report=xml:../../tmp/reports/coverage.xml
+	cd ./lambdas && PYTHONPATH=.:./tests ./venv/bin/python3 -m pytest tests \
+		-vv \
+		--cov=. \
+		--cov-report=xml:../tmp/reports/coverage.xml
 
 test-degrades-coverage:
 	rm -rf tmp/reports || true

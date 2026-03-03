@@ -7,7 +7,7 @@ task="$1"
 function build_lambda {
     lambda_name=$1
     lambda_services=$2
-    shared_requirements=lambdas/shared_requirements.txt
+    shared_requirements=lambdas/requirements/shared_requirements.txt
     build_dir=lambdas/build/$lambda_name
     rm -rf $build_dir
     mkdir -p $build_dir
@@ -33,7 +33,7 @@ function build_lambda_layer {
     rm -rf $build_dir/python
     mkdir -p $build_dir/python
 
-    requirements_file=lambdas/$layer_name-requirements.txt
+    requirements_file=lambdas/requirements/$layer_name-requirements.txt
     if test -f "$requirements_file"; then
         python3 -m venv create_layer
         source create_layer/bin/activate

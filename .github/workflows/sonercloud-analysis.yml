@@ -25,13 +25,14 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: 3.13
-      - name: Install degrades requirements
+      - name: Make virtual environment
         run: |
-          make degrades-env
+          make env
 
-      - name: Test Degrades with coverage
+      - name: Run tests with coverage
         run: |
-          make test-degrades-coverage
+          make test-lambdas-with-coverage
+          sed -i "s@filename=\@filename=\"lambdas/@" tmp/reports/coverage.xml
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v6

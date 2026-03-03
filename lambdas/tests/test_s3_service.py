@@ -8,7 +8,7 @@ from lambdas.tests.conftest import REGION_NAME, MOCK_BUCKET
 
 @mock_aws
 def test_service_list_files_from_S3(set_env, mock_s3_with_files):
-    folder_path = "mocks/mixed_messages"
+    folder_path = "tests/mocks/mixed_messages"
     json_files = [f for f in os.listdir(folder_path) if f.endswith(".json")]
 
     service = S3Service()
@@ -35,7 +35,7 @@ def test_get_file_from_S3(set_env, mock_s3_with_files):
     )
 
     actual = service.read_file_from_S3(bucket_name=MOCK_BUCKET, key=files_names[0])
-    with open("mocks/mixed_messages/01-DEGRADES-01.json", "rb") as expected:
+    with open("tests/mocks/mixed_messages/01-DEGRADES-01.json", "rb") as expected:
         assert expected.read() == actual
 
 
@@ -52,11 +52,11 @@ def test_s3_service_uploads_files(set_env, mock_s3_with_files):
     service = S3Service()
 
     service.upload_file(
-        file="reports/2024-09-20.csv",
+        file="tests/reports/2024-09-20.csv",
         bucket_name=MOCK_BUCKET,
         key="2024/09/20/summary.csv",
     )
 
     actual = service.read_file_from_S3(MOCK_BUCKET, "2024/09/20/summary.csv")
-    with open("reports/2024-09-20.csv", "rb") as expected:
+    with open("tests/reports/2024-09-20.csv", "rb") as expected:
         assert expected.read() == actual

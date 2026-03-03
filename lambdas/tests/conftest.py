@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 from dataclasses import dataclass
 from moto import mock_aws
-from mocks.sqs_messages.degrades import (
+from lambdas.tests.mocks.sqs_messages.degrades import (
     MOCK_COMPLEX_DEGRADES_MESSAGE,
     MOCK_FIRST_DEGRADES_MESSAGE,
     MOCK_SIMPLE_DEGRADES_MESSAGE,
@@ -166,7 +166,7 @@ def mock_s3():
 @pytest.fixture
 def mock_s3_with_files(mock_s3):
     with mock_aws():
-        folder_path = "mocks/mixed_messages"
+        folder_path = "tests/mocks/mixed_messages"
         json_files = [f for f in os.listdir(folder_path) if f.endswith(".json")]
 
         for file in json_files:

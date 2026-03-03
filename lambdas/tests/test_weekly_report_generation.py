@@ -30,7 +30,7 @@ def upload_daily_reports(mock_s3):
     ]
 
     for date in date_keys:
-        mock_s3.upload_file(f"reports/{date}.csv", f"reports/daily/{date}.csv")
+        mock_s3.upload_file(f"tests/reports/{date}.csv", f"reports/daily/{date}.csv")
 
 
 def test_get_keys_from_date_range():
@@ -106,7 +106,7 @@ def test_weekly_report_generation_adds_new_row_to_global_report(
     }
 
     mock_s3.upload_file(
-        "reports/global.csv", "reports/degrades_weekly_report.csv"
+        "tests/reports/global.csv", "reports/degrades_weekly_report.csv"
     )
 
     generate_weekly_report("2024-09-23")
@@ -116,7 +116,7 @@ def test_weekly_report_generation_adds_new_row_to_global_report(
         Filename="/tmp/degrades_weekly_report.csv",
     )
     with (
-        open("reports/global_2.csv", "r") as expected_file,
+        open("tests/reports/global_2.csv", "r") as expected_file,
         open("/tmp/degrades_weekly_report.csv", "r") as actual_file,
     ):
         expected = expected_file.read()
@@ -142,7 +142,7 @@ def test_generate_weekly_reports_writes_new_report_no_previous_report_written(
     generate_weekly_report("2024-09-16")
 
     with (
-        open("reports/global.csv", "r") as expected_file,
+        open("tests/reports/global.csv", "r") as expected_file,
         open("/tmp/degrades_weekly_report.csv", "r") as actual_file,
     ):
         expected = expected_file.read()
