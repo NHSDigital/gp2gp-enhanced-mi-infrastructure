@@ -21,9 +21,8 @@ function build_lambda {
       for folder in $lambda_services; do
         if [ -d "$source_path/$folder" ]; then
           cp -r "$source_path/$folder" "$build_dir"
-
           elif [ -d "$folder" ]; then
-            cp -r "$folder" "build_dir"
+            cp -r "$folder" "$build_dir"
 
           else
             echo "Cannot find '$folder'"
@@ -36,16 +35,17 @@ function build_lambda {
     fi
 
     pushd "$build_dir"
-    zip -r -X "../$lambda_name.zip"
+    zip -r -X "../$lambda_name.zip" .
     popd
 }
 
 function build_lambda_layer {
     layer_name=$1
     build_dir="lambdas/build/layers/$layer_name"
+    pkg_dir="$build_dir/python/lib/python3.12/site-packages"
 
     rm -rf "$build_dir"
-    mkdir -p "$build_dir/python"
+    mkdir -p "$pkg_dir"
 
     requirements_file="lambdas/requirements/$layer_name-requirements.txt"
 
@@ -61,8 +61,8 @@ function build_lambda_layer {
             --only-binary=:all: \
             --implementation cp \
             --python-version 3.12 \
-            -r "$requirements_file"
-        cp -r create_layer/lib/python3.12/site-packages/. "$build_dir/python/"
+            -r "$requirements_file" \
+            -t "$pkg_dir"
 
         deactivate
         rm -rf create_layer
