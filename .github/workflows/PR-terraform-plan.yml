@@ -4,9 +4,9 @@ on:
     branches:
       - main
     paths:
-      - 'stacks/container-repositories/**'
-      - 'stacks/base-networking/**'
-      - 'stacks/ecs-cluster/**'
+      - '../../stacks/container_repositories/**'
+      - '../../stacks/base_networking/**'
+      - '../../stacks/ecs_cluster/**'
 
 permissions:
   pull-requests: write

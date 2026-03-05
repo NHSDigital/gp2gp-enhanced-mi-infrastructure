@@ -31,7 +31,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          make test-lambdas-with-coverage
+          make test-with-coverage
           sed -i "s@filename=\@filename=\"lambdas/@" tmp/reports/coverage.xml
 
       - name: SonarCloud Scan

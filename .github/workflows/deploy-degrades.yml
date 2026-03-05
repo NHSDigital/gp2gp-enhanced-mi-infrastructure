@@ -16,14 +16,14 @@ on:
     branches: [ main ]
     paths:
       - 'lambda/degrades-reporting/**'
-      - 'stacks/degrades-reporting/**'
+      - '../../stacks/degrades_reporting/**'
       - '.github/workflows/deploy-degrades.yml'
 
   pull_request:
     branches: [ main ]
     paths:
       - 'lambda/degrades-reporting/**'
-      - 'stacks/degrades-reporting/**'
+      - '../../stacks/degrades_reporting/**'
       - '.github/workflows/deploy-degrades.yml'
 
 
@@ -46,11 +46,11 @@ jobs:
 
       - name: Install requirements
         run: |
-          make degrades-env
+          make env
 
       - name: Test Degrades
         run: |
-          make test-degrades
+          make test-without-coverage
 
 
   deploy_degrades:

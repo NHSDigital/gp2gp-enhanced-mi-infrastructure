@@ -38,7 +38,7 @@ jobs:
       - name: Terraform format check
         id: fmt
         run: terraform fmt -check
-        working-directory: ./stacks/degrades-reporting/terraform
+        working-directory: ./stacks/degrades_reporting/terraform
 
       - name: Terraform Init
         id: init
@@ -46,12 +46,12 @@ jobs:
           terraform init -no-color -backend-config="key=data-pipeline/degrades-dashboards/terraform.tfstate" \
           -backend-config="bucket=${{ secrets.AWS_STATE_BUCKET }}" \
           -backend-config="dynamodb_table=${{ secrets.AWS_STATE_LOCK_TABLE }}"
-        working-directory: ./stacks/degrades-reporting/terraform
+        working-directory: ./stacks/degrades_reporting/terraform
 
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
-        working-directory: ./stacks/degrades-reporting/terraform
+        working-directory: ./stacks/degrades_reporting/terraform
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -59,7 +59,7 @@ jobs:
           python-version: 3.12
 
       - name: Make Virtual Env
-        working-directory: ./lambda/degrades-reporting
+        working-directory: ./lambdas/degrades_reporting
         run: |
           python3 -m venv venv
 
@@ -68,14 +68,14 @@ jobs:
           make zip-degrades-lambdas
 
       - name: Setup Terraform variables
-        working-directory: ./stacks/degrades-reporting/terraform
+        working-directory: ./stacks/degrades_reporting/terraform
         run: |-
           cat > pipeline.auto.tfvars <<EOF
             environment = "${{ vars.AWS_ENVIRONMENT }}"
             degrades_message_queue = "${{ secrets.AWS_DEGRADES_MESSAGE_QUEUE }}"
-            degrades_message_receiver_lambda_zip = "./lambda/build/degrades-message-receiver.zip"
-            degrades_daily_summary_lambda_zip = "./lambda/build/degrades-daily-summary.zip"
-            degrades_lambda_layer_zip = "./lambda/build/degrades-lambda-layer.zip"
+            degrades_message_receiver_lambda_zip = "./lambdas/build/degrades-message-receiver.zip"
+            degrades_daily_summary_lambda_zip = "./lambdas/build/degrades-daily-summary.zip"
+            degrades_lambda_layer_zip = "./lambdas/build/degrades-lambda-layer.zip"
             degrades_message_table = "${{ secrets.AWS_DEGRADES_MESSAGE_TABLE }}"
             registrations_mi_event_bucket = "${{ secrets.AWS_REGISTRATION_MI_EVENT_BUCKET }}"
             region = "${{ vars.AWS_REGION }}"
