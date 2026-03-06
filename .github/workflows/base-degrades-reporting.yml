@@ -65,7 +65,7 @@ jobs:
 
       - name: Build Lambdas
         run: | 
-          make zip-degrades-lambdas
+           ./tasks_github_actions.sh build-degrades-lambdas
 
       - name: Setup Terraform variables
         working-directory: ./stacks/degrades_reporting/terraform
