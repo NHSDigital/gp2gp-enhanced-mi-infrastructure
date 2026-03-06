@@ -15,6 +15,10 @@ on:
         description: "Which terraform stack directory to run"
         type: string
         required: true
+      hyphenated_alias:
+        description: "Hyphenated stack alias"
+        type: string
+        default: ""
 
 jobs:
   terraform_process:
@@ -49,7 +53,7 @@ jobs:
       - name: Terraform Init
         id: init
         run: | 
-          terraform init -no-color -backend-config="key=gp-registrations-mi/${{ inputs.terraform_stack }}/terraform.tfstate" \
+          terraform init -no-color -backend-config="key=gp-registrations-mi/${{ inputs.hyphenated_alias }}/terraform.tfstate" \
           -backend-config="bucket=${{ secrets.AWS_STATE_BUCKET }}" \
           -backend-config="dynamodb_table=${{ secrets.AWS_STATE_LOCK_TABLE }}"
         shell: bash

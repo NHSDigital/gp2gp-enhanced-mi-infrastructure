@@ -84,11 +84,13 @@ build-lambdas)
   build_lambda "splunk_cloud_event_uploader" "lambdas"
   build_lambda "event_enrichment" "lambdas" "utils"
   build_lambda "s3_event_uploader" "lambdas"
+;;
+
+build-degrades-lambdas)
   build_lambda_layer pandas
   build_lambda_layer core
   build_lambda "degrades_daily_summary" "lambdas/degrades_reporting" "degrade_utils models"
   build_lambda "degrades_message_receiver" "lambdas/degrades_reporting" "degrade_utils models"
-
 ;;
 *)
   echo "Invalid task: '${task}'"
