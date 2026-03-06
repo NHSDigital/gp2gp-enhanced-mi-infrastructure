@@ -87,8 +87,8 @@ build-lambdas)
 ;;
 
 build-degrades-lambdas)
-  build_lambda_layer pandas
-  build_lambda_layer core
+  build_lambda_layer "pandas-lambda-layer"
+  build_lambda_layer "degrades-lambda-layer"
   build_lambda "degrades_daily_summary" "lambdas/degrades_reporting" "degrade_utils models"
   build_lambda "degrades_message_receiver" "lambdas/degrades_reporting" "degrade_utils models"
 ;;
