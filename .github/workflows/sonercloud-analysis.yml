@@ -32,7 +32,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           make test-with-coverage
-          sed -i "s@filename=\"@filename=\"lambdas/@" coverage.xml
+          sed -i "s@filename=\"@filename=\"lambdas/@" lambdas/coverage.xml
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v7
