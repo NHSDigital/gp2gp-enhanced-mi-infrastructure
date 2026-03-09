@@ -7,6 +7,7 @@ on:
       - '../../stacks/container_repositories/**'
       - '../../stacks/base_networking/**'
       - '../../stacks/ecs_cluster/**'
+      - '.github/workflows/PR-terraform-plan.yml'
 
 permissions:
   pull-requests: write

@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - '../../stacks/gp_registrations_mi/**'
+      - '.github/workflows/PR-gp-registrations-mi.yml'
 
 permissions:
   pull-requests: write
