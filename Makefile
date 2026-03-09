@@ -35,7 +35,7 @@ test-without-coverage:
 test-with-coverage:
 	cd ./lambdas && PYTHONPATH=.:./tests ./venv/bin/python3 -m pytest tests \
 		--cov=. \
-		--cov-report=xml:../tmp/reports/coverage.xml
+		--cov-report=xml:../lambdas/coverage.xml
 
 format-degrades:
 	cd $(DEGRADES_LAMBDA_PATH) && ./venv/bin/ruff format
