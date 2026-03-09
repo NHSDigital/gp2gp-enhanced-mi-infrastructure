@@ -47,7 +47,7 @@ function build_lambda_layer {
     rm -rf "$build_dir"
     mkdir -p "$pkg_dir"
 
-    requirements_file="lambdas/requirements/$layer_name-requirements.txt"
+    requirements_file="lambdas/requirements/$layer_name_requirements.txt"
 
     if [ ! -f "$requirements_file" ]; then
         requirements_file="lambdas/requirements/requirements_$layer_name.txt"
@@ -87,8 +87,8 @@ build-lambdas)
 ;;
 
 build-degrades-lambdas)
-  build_lambda_layer "pandas-lambda-layer"
-  build_lambda_layer "degrades-lambda-layer"
+  build_lambda_layer "pandas_lambda_layer"
+  build_lambda_layer "degrades_lambda_layer"
   build_lambda "degrades_daily_summary" "lambdas/degrades_reporting" "degrade_utils models"
   build_lambda "degrades_message_receiver" "lambdas/degrades_reporting" "degrade_utils models"
 ;;
