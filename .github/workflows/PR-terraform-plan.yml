@@ -31,7 +31,8 @@ jobs:
     uses: ./.github/workflows/base-terraform-plan-and-apply.yml
     with:
       environment: ${{ matrix.environment }}
-      terraform_stack: ${{ matrix.terraform_stack }}
+      terraform_stack: ${{ matrix.terraform_stack.name }}
+      hyphenated_alias: ${{ matrix.terraform_stack.hyphenated_alias }}
     secrets: inherit
 
 
