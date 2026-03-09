@@ -21,7 +21,13 @@ jobs:
       max-parallel: 1
       matrix:
         environment: [ dev, prod-plan ]
-        terraform_stack: [container-repositories, base-networking, ecs-cluster]
+        terraform_stack:
+          - name: "base_networking"
+            hyphenated_alias: base-networking
+          - name: "container_repositories"
+            hyphenated_alias: container-repositories
+          - name: "ecs_cluster"
+            hyphenated_alias: ecs-cluster
     uses: ./.github/workflows/base-terraform-plan-and-apply.yml
     with:
       environment: ${{ matrix.environment }}
