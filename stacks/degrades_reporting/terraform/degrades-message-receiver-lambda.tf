@@ -2,7 +2,7 @@ resource "aws_lambda_function" "degrades_message_receiver" {
   function_name    = "${var.environment}_${var.degrades_message_receiver_lambda_name}"
   filename         = var.degrades_message_receiver_lambda_zip
   role             = aws_iam_role.degrades_message_receiver_lambda.arn
-  runtime          = "python3.12"
+  runtime          = "python3.13"
   handler          = "main.lambda_handler"
   timeout          = 29
   source_code_hash = filebase64sha256("${var.degrades_message_receiver_lambda_zip}")

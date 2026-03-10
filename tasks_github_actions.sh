@@ -42,7 +42,7 @@ function build_lambda {
 function build_lambda_layer {
     layer_name=$1
     build_dir="lambdas/build/layers/$layer_name"
-    pkg_dir="$build_dir/python/lib/python3.12/site-packages"
+    pkg_dir="$build_dir/python/lib/python3.13/site-packages"
 
     rm -rf "$build_dir"
     mkdir -p "$pkg_dir"
@@ -60,7 +60,7 @@ function build_lambda_layer {
             --platform manylinux2014_x86_64 \
             --only-binary=:all: \
             --implementation cp \
-            --python-version 3.12 \
+            --python-version 3.13 \
             -r "$requirements_file" \
             -t "$pkg_dir"
 

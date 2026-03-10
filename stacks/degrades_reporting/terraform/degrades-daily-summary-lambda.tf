@@ -2,7 +2,7 @@ resource "aws_lambda_function" "degrades_daily_summary" {
   function_name    = "${var.environment}_${var.degrades_daily_summary_lambda_name}"
   filename         = var.degrades_daily_summary_lambda_zip
   role             = aws_iam_role.degrades_daily_summary_lambda.arn
-  runtime          = "python3.12"
+  runtime          = "python3.13"
   handler          = "main.lambda_handler"
   timeout          = 900
   memory_size      = 256
