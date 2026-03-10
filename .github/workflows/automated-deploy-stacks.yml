@@ -1,13 +1,14 @@
-name: "PR-terraform-plan"
+name: "Z-AUTOMATED: Deploy - Stacks"
+
 on:
   pull_request:
     branches:
       - main
     paths:
-      - '../../stacks/container_repositories/**'
-      - '../../stacks/base_networking/**'
-      - '../../stacks/ecs_cluster/**'
-      - '.github/workflows/PR-terraform-plan.yml'
+      - "../../stacks/container_repositories/**"
+      - "../../stacks/base_networking/**"
+      - "../../stacks/ecs_cluster/**"
+      - ".github/workflows/automated-deploy-stacks.yml"
 
 permissions:
   pull-requests: write
@@ -20,7 +21,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        environment: [ dev, prod-plan ]
+        environment: [dev, prod-plan]
         terraform_stack:
           - name: "base_networking"
             hyphenated_alias: base-networking
@@ -34,5 +35,3 @@ jobs:
       terraform_stack: ${{ matrix.terraform_stack.name }}
       hyphenated_alias: ${{ matrix.terraform_stack.hyphenated_alias }}
     secrets: inherit
-
-

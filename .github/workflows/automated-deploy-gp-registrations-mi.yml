@@ -1,11 +1,12 @@
-name: 'PR-terraform-gp-registrations-mi'
+name: "Z-AUTOMATED: Deploy - GP Registrations MI"
+
 on:
   pull_request:
     branches:
       - main
     paths:
-      - '../../stacks/gp_registrations_mi/**'
-      - '.github/workflows/PR-gp-registrations-mi.yml'
+      - "../../stacks/gp_registrations_mi/**"
+      - ".github/workflows/automated-deploy-gp-registrations-mi.yml"
 
 permissions:
   pull-requests: write
@@ -17,10 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [ dev, prod-plan ]
+        environment: [dev, prod-plan]
     uses: ./.github/workflows/base-gp-registrations-mi.yml
     with:
       environment: ${{ matrix.environment }}
     secrets: inherit
-
-
