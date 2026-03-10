@@ -1,4 +1,5 @@
-name: base-gp-registrations-mi
+name: "Z-BASE: GP Registrations MI"
+
 on:
   workflow_call:
     inputs:
@@ -11,6 +12,11 @@ on:
         description: "Is workflow run on deployment"
         type: boolean
         default: false
+
+permissions:
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
 
 jobs:
   terraform_process:
@@ -26,7 +32,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v6
         id: creds
         with:
-          role-to-assume:  ${{ (inputs.is_deployment && secrets.AWS_ASSUME_ROLE) || secrets.AWS_ASSUME_ROLE_READ_ONLY }}
+          role-to-assume: ${{ (inputs.is_deployment && secrets.AWS_ASSUME_ROLE) || secrets.AWS_ASSUME_ROLE_READ_ONLY }}
           role-skip-session-tagging: true
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
@@ -64,7 +70,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: | 
+        run: |
           terraform init -no-color -backend-config="key=${{ secrets.AWS_STATE_S3_KEY }}" \
           -backend-config="bucket=${{ secrets.AWS_STATE_BUCKET }}" \
           -backend-config="dynamodb_table=${{ secrets.AWS_STATE_LOCK_TABLE }}"
@@ -79,7 +85,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
+          python-version: "3.13"
 
       - name: Make virtual environment
         if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')) && inputs.is_deployment
@@ -88,8 +94,8 @@ jobs:
           ./venv/bin/pip3 install --upgrade pip urllib3 certifi
 
       - name: Build Lambdas
-        run: | 
-            ./tasks_github_actions.sh build-lambdas
+        run: |
+          ./tasks_github_actions.sh build-lambdas
 
       - name: Get ODS CSV Files
         if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')) && inputs.is_deployment

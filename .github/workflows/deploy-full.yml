@@ -1,8 +1,11 @@
-name: Full Deployment
+name: Deploy - Full
+
+run-name: "${{ github.event_name == 'push' ? 'push' : format('{0} | {1}', inputs.environment, inputs.is_deployment ? 'Apply' : 'Plan') }}"
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+
   workflow_dispatch:
     inputs:
       environment:
@@ -17,8 +20,7 @@ on:
         type: boolean
         default: false
         description: "Does the workflow run Terraform Apply?"
-        
-        
+
 permissions:
   pull-requests: write
   id-token: write # This is required for requesting the JWT

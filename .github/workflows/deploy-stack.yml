@@ -1,0 +1,46 @@
+name: Deploy - Stack
+
+run-name: "${{ inputs.environment }} | ${{ inputs.terraform_stack }} | ${{ inputs.hyphenated_alias }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        default: "dev"
+        description: "Which environment should this run against"
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+      terraform_stack:
+        description: "Which terraform stack directory to run"
+        type: choice
+        required: true
+        options:
+          - container_repositories
+          - base_networking
+          - ecs_cluster
+      hyphenated_alias:
+        description: "Select the corresponding alias"
+        type: choice
+        required: true
+        options:
+          - container-repositories
+          - base-networking
+          - ecs-cluster
+
+permissions:
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  terraform_process:
+    uses: ./.github/workflows/base-terraform-plan-and-apply.yml
+    with:
+      environment: ${{ inputs.environment }}
+      is_deployment: true
+      terraform_stack: ${{ inputs.terraform_stack }}
+      hyphenated_alias: ${{ inputs.hyphenated_alias }}
+    secrets: inherit

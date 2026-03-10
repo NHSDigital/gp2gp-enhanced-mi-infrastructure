@@ -1,4 +1,6 @@
-name: Deploy Degrades
+name: Deploy - Degrades
+
+run-name: ${{ inputs.environment }}
 
 on:
   workflow_dispatch:
@@ -13,19 +15,18 @@ on:
           - prod
 
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'lambdas/degrades_reporting/**'
-      - '../../stacks/degrades_reporting/**'
-      - '.github/workflows/deploy-degrades.yml'
+      - "lambdas/degrades_reporting/**"
+      - "../../stacks/degrades_reporting/**"
+      - ".github/workflows/deploy-degrades.yml"
 
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'lambdas/degrades_reporting/**'
-      - '../../stacks/degrades_reporting/**'
-      - '.github/workflows/deploy-degrades.yml'
-
+      - "lambdas/degrades_reporting/**"
+      - "../../stacks/degrades_reporting/**"
+      - ".github/workflows/deploy-degrades.yml"
 
 permissions:
   pull-requests: write
@@ -51,7 +52,6 @@ jobs:
       - name: Test Degrades
         run: |
           make test-without-coverage
-
 
   deploy_degrades:
     needs: [test_lambda]

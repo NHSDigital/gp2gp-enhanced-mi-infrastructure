@@ -1,15 +1,18 @@
-name: deploy-gp-registrations-mi
+name: Deploy - GP Registrations MI
+
+run-name: ${{ inputs.environment }}
+
 on:
   workflow_dispatch:
-      inputs:
-        environment:
-          default: "dev"
-          description: "Which environment should this run against"
-          required: true
-          type: choice
-          options:
-            - dev
-            - prod
+    inputs:
+      environment:
+        default: "dev"
+        description: "Which environment should this run against"
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
 
 permissions:
   pull-requests: write
