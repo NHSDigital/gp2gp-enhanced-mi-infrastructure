@@ -22,13 +22,6 @@ test-degrades:
 	mkdir -p tmp/reports
 	cd $(DEGRADES_LAMBDA_PATH)  && venv/bin/python3 -m pytest tests/
 
-setup-test-env:
-	rm -rf tmp/reports || true
-	mkdir -p tmp/reports
-	rm -rf $(LAMBDA_TEST_PATH)/.venv
-	python 3.13 -m venv $(LAMBDA_TEST_PATH)/.venv
-	$(LAMBDA_TEST_PATH)/.venv/bin/pip install -r lambdas/test_requirements.txt pytest pytest-cov
-
 test-without-coverage:
 	cd ./lambdas && PYTHONPATH=.:./tests ./venv/bin/python3 -m pytest tests
 
