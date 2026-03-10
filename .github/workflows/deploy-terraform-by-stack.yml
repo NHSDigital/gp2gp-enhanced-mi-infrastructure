@@ -15,10 +15,17 @@ on:
           type: choice
           required: true
           options:
+            - container_repositories
+            - base_networking
+            - ecs_cluster
+        hyphenated_alias:
+          description: "Select the corresponding alias"
+          type: choice
+          required: true
+          options:
             - container-repositories
             - base-networking
             - ecs-cluster
-
 permissions:
   pull-requests: write
   id-token: write # This is required for requesting the JWT
@@ -31,6 +38,7 @@ jobs:
       environment: ${{ inputs.environment }}
       is_deployment: true
       terraform_stack: ${{ inputs.terraform_stack }}
+      hyphenated_alias: ${{ inputs.hyphenated_alias }}
     secrets: inherit
 
 

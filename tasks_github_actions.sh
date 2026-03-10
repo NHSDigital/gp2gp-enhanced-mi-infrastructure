@@ -6,55 +6,91 @@ task="$1"
 
 function build_lambda {
     lambda_name=$1
-    lambda_services=$2
-    shared_requirements=lambda/shared_requirements.txt
-    build_dir=lambda/build/$lambda_name
+    source_path=$2
+    lambda_services=$3
+
+    build_dir=lambdas/build/$lambda_name
+    shared_requirements=lambdas/requirements/shared_requirements.txt
+    build_dir=lambdas/build/$lambda_name
     rm -rf $build_dir
     mkdir -p $build_dir
 
-    if test "$lambda_services"; then
-        cp -r ./$lambda_services $build_dir
-    fi
-    cp lambda/$lambda_name/*.py $build_dir
+    cp -r "$source_path/$lambda_name/." "$build_dir/"
 
-    if test -f "$shared_requirements"; then
-        pip install -r $shared_requirements -t $build_dir
+    if [ -n "$lambda_services" ]; then
+      for folder in $lambda_services; do
+        if [ -d "$source_path/$folder" ]; then
+          cp -r "$source_path/$folder" "$build_dir"
+          elif [ -d "$folder" ]; then
+            cp -r "$folder" "$build_dir"
+
+          else
+            echo "Cannot find '$folder'"
+        fi
+      done
     fi
-    
-    pushd $build_dir
-    zip -r -X ../$lambda_name.zip .
+
+    if [ -f "$shared_requirements" ]; then
+      pip install -r "$shared_requirements" -t "$build_dir"
+    fi
+
+    pushd "$build_dir"
+    zip -r -X "../$lambda_name.zip" .
     popd
 }
 
 function build_lambda_layer {
     layer_name=$1
-    build_dir=lambda/build/layers/$layer_name
+    build_dir="lambdas/build/layers/$layer_name"
+    pkg_dir="$build_dir/python/lib/python3.13/site-packages"
 
-    rm -rf $build_dir/python
-    mkdir -p $build_dir/python
+    rm -rf "$build_dir"
+    mkdir -p "$pkg_dir"
 
-    requirements_file=lambda/$layer_name-requirements.txt
-    if test -f "$requirements_file"; then
+    requirements_file="lambdas/requirements/$layer_name_requirements.txt"
+
+    if [ ! -f "$requirements_file" ]; then
+        requirements_file="lambdas/requirements/requirements_$layer_name.txt"
+    fi
+    if [ -f "$requirements_file" ]; then
         python3 -m venv create_layer
         source create_layer/bin/activate
-        pip install -r $requirements_file
+
+        pip install -q \
+            --platform manylinux2014_x86_64 \
+            --only-binary=:all: \
+            --implementation cp \
+            --python-version 3.13 \
+            -r "$requirements_file" \
+            -t "$pkg_dir"
+
+        deactivate
+        rm -rf create_layer
+    else
+        echo "No requirements file found for $layer_name"
     fi
 
-    cp -r create_layer/lib $build_dir/python
-    pushd $build_dir
-    zip -r -X ../$layer_name.zip .
+    pushd "$build_dir"
+    zip -q -r -X "../$layer_name.zip" .
     popd
 }
 
 echo "--- ${task} ---"
 case "${task}" in
 build-lambdas)
-  build_lambda_layer mi-enrichment
-  build_lambda bulk-ods-update utils
-  build_lambda error-alarm-alert
-  build_lambda splunk-cloud-event-uploader
-  build_lambda event-enrichment utils
-  build_lambda s3-event-uploader
+  build_lambda_layer mi_enrichment
+  build_lambda "bulk_ods_update" "lambdas" "utils"
+  build_lambda "error_alarm_alert" "lambdas"
+  build_lambda "splunk_cloud_event_uploader" "lambdas"
+  build_lambda "event_enrichment" "lambdas" "utils"
+  build_lambda "s3_event_uploader" "lambdas"
+;;
+
+build-degrades-lambdas)
+  build_lambda_layer "pandas_lambda_layer"
+  build_lambda_layer "degrades_lambda_layer"
+  build_lambda "degrades_daily_summary" "lambdas/degrades_reporting" "degrade_utils models"
+  build_lambda "degrades_message_receiver" "lambdas/degrades_reporting" "degrade_utils models"
 ;;
 *)
   echo "Invalid task: '${task}'"

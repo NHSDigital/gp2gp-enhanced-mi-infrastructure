@@ -15,6 +15,10 @@ on:
         description: "Which terraform stack directory to run"
         type: string
         required: true
+      hyphenated_alias:
+        description: "Hyphenated stack alias"
+        type: string
+        default: ""
 
 jobs:
   terraform_process:
@@ -27,10 +31,10 @@ jobs:
         working-directory: ./stacks/${{ inputs.terraform_stack }}/terraform
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v5
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-region: ${{ vars.AWS_REGION }}
           role-to-assume:  ${{inputs.is_deployment && secrets.AWS_ASSUME_ROLE || secrets.AWS_ASSUME_ROLE_READ_ONLY}}
@@ -38,7 +42,7 @@ jobs:
           mask-aws-account-id: true
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: latest
 
@@ -49,7 +53,7 @@ jobs:
       - name: Terraform Init
         id: init
         run: | 
-          terraform init -no-color -backend-config="key=gp-registrations-mi/${{ inputs.terraform_stack }}/terraform.tfstate" \
+          terraform init -no-color -backend-config="key=gp-registrations-mi/${{ inputs.hyphenated_alias }}/terraform.tfstate" \
           -backend-config="bucket=${{ secrets.AWS_STATE_BUCKET }}" \
           -backend-config="dynamodb_table=${{ secrets.AWS_STATE_LOCK_TABLE }}"
         shell: bash

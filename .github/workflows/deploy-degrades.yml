@@ -15,15 +15,15 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'lambda/degrades-reporting/**'
-      - 'stacks/degrades-reporting/**'
+      - 'lambdas/degrades_reporting/**'
+      - '../../stacks/degrades_reporting/**'
       - '.github/workflows/deploy-degrades.yml'
 
   pull_request:
     branches: [ main ]
     paths:
-      - 'lambda/degrades-reporting/**'
-      - 'stacks/degrades-reporting/**'
+      - 'lambdas/degrades_reporting/**'
+      - '../../stacks/degrades_reporting/**'
       - '.github/workflows/deploy-degrades.yml'
 
 
@@ -37,20 +37,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
+          python-version: 3.13
 
       - name: Install requirements
         run: |
-          make degrades-env
+          make env
 
       - name: Test Degrades
         run: |
-          make test-degrades
+          make test-without-coverage
 
 
   deploy_degrades:

@@ -30,11 +30,18 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        terraform_stack: [base-networking, container-repositories, ecs-cluster]
+        terraform_stack:
+          - name: "base_networking"
+            hyphenated_alias: base-networking
+          - name: "container_repositories"
+            hyphenated_alias: container-repositories
+          - name: "ecs_cluster"
+            hyphenated_alias: ecs-cluster
     uses: ./.github/workflows/base-terraform-plan-and-apply.yml
     with:
       environment: ${{ github.event_name == 'push' && 'dev' || inputs.environment }}
-      terraform_stack: ${{ matrix.terraform_stack }}
+      terraform_stack: ${{ matrix.terraform_stack.name }}
+      hyphenated_alias: ${{ matrix.terraform_stack.hyphenated_alias }}
       is_deployment: ${{ github.event_name == 'push' && true || inputs.is_deployment }}
     secrets: inherit
 

@@ -15,17 +15,17 @@ jobs:
     name: SBOM Repo Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-      - uses: anchore/sbom-action@8e94d75ddd33f69f691467e42275782e4bfefe84 # v0.20.9
+      - uses: anchore/sbom-action@57aae528053a48a3f6235f2d9461b05fbcb7366d # v0.23.1
         with:
           path: "."
           format: cyclonedx-json
           output-file: sbom-repo-${{ github.event.repository.name }}-${{ github.sha }}.cdx.json
 
-      - uses: anchore/scan-action@f6601287cdb1efc985d6b765bbf99cb4c0ac29d8 # v7.0.0
+      - uses: anchore/scan-action@7037fa011853d5a11690026fb85feee79f4c946c # v7.3.2
         id: sbom-scan
         with:
           sbom: sbom-repo-${{ github.event.repository.name }}-${{ github.sha }}.cdx.json
