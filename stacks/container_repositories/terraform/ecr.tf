@@ -39,3 +39,26 @@ data "aws_ssm_parameter" "prod-aws-account-id" {
   count = var.environment == "dev" ? 1 : 0
   name  = "/registrations/dev/user-input/prod-aws-account-id"
 }
+
+resource "aws_ecr_lifecycle_policy" "gp_registrations_mi" {
+  count = var.environment == "prod" ? 1 : 0
+  repository = aws_ecr_repository.gp_registrations_mi.name
+  policy     = <<EOF
+  {
+      "rules": [
+        {
+          "rulePriority": 1,
+          "description": "Keep the 3 most recent images",
+          "selection": {
+            "tagStatus": "any",
+            "countType": "imageCountMoreThan",
+            "countNumber": 3
+          },
+          "action": {
+            "type": "expire"
+          }
+        }
+      ]
+ }
+EOF
+}
