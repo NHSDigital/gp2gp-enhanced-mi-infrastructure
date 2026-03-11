@@ -1,6 +1,6 @@
 name: Deploy - Full
 
-run-name: "${{ github.event_name == 'push' ? 'push' : format('{0} | {1}', inputs.environment, inputs.is_deployment ? 'Apply' : 'Plan') }}"
+run-name: "${{ if(github.event_name == 'push', 'push', format('{0} | {1}', inputs.environment, if(inputs.is_deployment, 'Apply', 'Plan'))) }}"
 
 on:
   push:
